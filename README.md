@@ -13,6 +13,7 @@
     - 对于 `run_after_done.sh`：
       需要更改脚本中的路径：
       ```
+      python3 /path_of_your_folder/unwanted.py
       output=$(python3 /path_of_your_folder/rename_anime.py --name="$file_name" --root="$directory")
       ```
       然后在qBittorrent设置中，进入 **设置** -> **下载**，向下滚动找到 **完成后运行程序**，添加以下命令：

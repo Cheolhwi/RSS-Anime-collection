@@ -9,12 +9,13 @@ This repository contains scripts for managing and automating your anime download
     git clone https://github.com/Cheolhwi/RSS-Anime-collection.git
     ```
 
-2. **Configure qBittorrent in Setting -> downloads**:
+2. **Configure qBittorrent**:
     - For `run_after_done.sh`:
       Need to change the path in the shell script:
       ```
       output=$(python3 /path_of_your_folder/rename_anime.py --name="$file_name" --root="$directory")
-      ``` 
+      ```
+      Then configure the qBittorent in Setting -> downloads, scroll down find ** Run on torrent finished ** add the prompt
       ```
       /path_of_your_folder/run_after_done.sh "%F" "%D"
       ```
@@ -27,5 +28,5 @@ This repository contains scripts for managing and automating your anime download
     ```
     0 0 1 */6 * /path/to/update_folder.sh
     ```
-4. **Subscribe the RSS link**
+4. **Subscribe the RSS link in qBittorrent**
    for me I use the nyaa RSS feed link for chinese traditional anime: https://nyaa.si/?page=rss&q=CHT&c=0_0&f=0

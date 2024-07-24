@@ -15,7 +15,7 @@ This repository contains scripts for managing and automating your anime download
       ```
       output=$(python3 /path_of_your_folder/rename_anime.py --name="$file_name" --root="$directory")
       ```
-      Then configure the qBittorent in Setting -> downloads, scroll down find ** Run on torrent finished ** add the prompt
+      Then configure the qBittorent in Setting -> downloads, scroll down find **Run on torrent finished** add the prompt
       ```
       /path_of_your_folder/run_after_done.sh "%F" "%D"
       ```

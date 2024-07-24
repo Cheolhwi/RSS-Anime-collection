@@ -21,7 +21,19 @@
       ```
       /path_of_your_folder/run_after_done.sh "%F" "%D"
       ```
-
+      文件目录树参考
+      ```
+      .  
+        ├── animelist.txt
+        ├── anime_update //download new anime folder
+        ├── history // folder for archive
+        ├── log.txt
+        ├── rename_anime.py
+        ├── run_after_done.sh
+        ├── unwanted.py
+        ├── unwanted_list.txt
+        └── update_folder.sh
+      ```
 3. **设置`update_folder.sh`的定时任务**：
     ```
     crontab -e

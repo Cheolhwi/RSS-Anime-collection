@@ -1,12 +1,13 @@
 import os
 from pathlib import Path
 
-unwanted_list_path = "/Volumes/media/anime/unwanted_list.txt"
-root_directory = "/Volumes/media/anime/new_update"  # 更新这个路径为你的根目录
+# 使用相对路径
+unwanted_list_path = Path("unwanted_list.txt")
+root_directory = Path("new_update")
 
 def load_unwanted_list():
-    if os.path.exists(unwanted_list_path):
-        with open(unwanted_list_path, 'r', encoding='utf-8') as f:
+    if unwanted_list_path.exists():
+        with unwanted_list_path.open('r', encoding='utf-8') as f:
             unwanted_list = [line.strip() for line in f.readlines()]
             return unwanted_list
     return []
@@ -14,7 +15,7 @@ def load_unwanted_list():
 def delete_unwanted_files(root, unwanted_list):
     for unwanted in unwanted_list:
         print(f"Looking for items containing: {unwanted}")
-        for item in Path(root).iterdir():  # 仅检查根目录中的文件和文件夹
+        for item in root.iterdir():  # 仅检查根目录中的文件和文件夹
             if unwanted in item.name:
                 print(f"Found item: {item}")
                 try:
@@ -46,7 +47,7 @@ if __name__ == "__main__":
     unwanted_list = load_unwanted_list()
     if unwanted_list:  # 检查列表是否为空
         print(f"Unwanted list: {unwanted_list}")
-        print(f"Contents of root directory: {list(Path(root_directory).iterdir())}")
+        print(f"Contents of root directory: {list(root_directory.iterdir())}")
         delete_unwanted_files(root_directory, unwanted_list)
     else:
         print("Unwanted list is empty. No files to delete.")

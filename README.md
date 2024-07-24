@@ -32,10 +32,6 @@
 4. **在qBittorrent中订阅RSS链接**：
     我使用的是nyaa的繁体中文RSS订阅链接： https://nyaa.si/?page=rss&q=CHT&c=0_0&f=0
 
-## 许可证
-
-这个项目是根据MIT许可证授权的。
-
 ## 英文版README
 
 [English Version README](README_EN.md)

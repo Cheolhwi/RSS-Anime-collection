@@ -33,7 +33,7 @@
     我使用的是nyaa的繁体中文RSS订阅链接： https://nyaa.si/?page=rss&q=CHT&c=0_0&f=0
 
 5. **修改unwanted_list.txt**：
-    对于不想追或者不想再看的番剧可以根据之前运行过生成的animelist.txt列表中添加至unwanted_list.txt,这样做就不会保留该番剧的文件和文件夹。
+    对于不想追或者不想再看的番剧可以根据之前运行过生成的animelist.txt列表中的番剧名，添加至unwanted_list.txt,这样做就不会保留该番剧的文件和文件夹。
 
 ## 英文版README
 

@@ -1,32 +1,41 @@
 # RSS Anime Collection
 
-This repository contains scripts for managing and automating your anime downloads and organization.
+用于管理和自动化动漫下载和整理的脚本。
 
-## Setup
+## 设置
 
-1. **Clone the repository**:
+1. **克隆仓库**：
     ```
     git clone https://github.com/Cheolhwi/RSS-Anime-collection.git
     ```
 
-2. **Configure qBittorrent**:
-    - For `run_after_done.sh`:
-      Need to change the path in the shell script:
+2. **配置qBittorrent**：
+    - 对于 `run_after_done.sh`：
+      需要更改脚本中的路径：
       ```
       output=$(python3 /path_of_your_folder/rename_anime.py --name="$file_name" --root="$directory")
       ```
-      Then configure the qBittorent in Setting -> downloads, scroll down find **Run on torrent finished** add the prompt
+      然后在qBittorrent设置中，进入 **设置** -> **下载**，向下滚动找到 **完成后运行程序**，添加以下命令：
       ```
       /path_of_your_folder/run_after_done.sh "%F" "%D"
       ```
 
-3. **Set up cron job for `update_folder.sh`**:
+3. **设置`update_folder.sh`的定时任务**：
     ```
     crontab -e
     ```
-    Need to change the path in the shell script and Add the following line:
+    需要更改脚本中的路径，并添加以下行：
     ```
     0 0 1 */6 * /path_of_your_folder/update_folder.sh
     ```
-4. **Subscribe the RSS link in qBittorrent**
-   for me I use the nyaa RSS feed link for chinese traditional language: https://nyaa.si/?page=rss&q=CHT&c=0_0&f=0
+
+4. **在qBittorrent中订阅RSS链接**：
+    我使用的是nyaa的繁体中文RSS订阅链接： https://nyaa.si/?page=rss&q=CHT&c=0_0&f=0
+
+## 许可证
+
+这个项目是根据MIT许可证授权的。
+
+## 英文版README
+
+[English Version README](README_EN.md)

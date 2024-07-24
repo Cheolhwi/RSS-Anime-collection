@@ -26,7 +26,7 @@ This repository contains scripts for managing and automating your anime download
     ```
     Need to change the path in the shell script and Add the following line:
     ```
-    0 0 1 */6 * /path/to/update_folder.sh
+    0 0 1 */6 * /path_of_your_folder/update_folder.sh
     ```
 4. **Subscribe the RSS link in qBittorrent**
    for me I use the nyaa RSS feed link for chinese traditional anime: https://nyaa.si/?page=rss&q=CHT&c=0_0&f=0

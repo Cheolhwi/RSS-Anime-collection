@@ -9,8 +9,12 @@ This repository contains scripts for managing and automating your anime download
     git clone https://github.com/Cheolhwi/RSS-Anime-collection.git
     ```
 
-2. **Configure qBittorrent in setting/downloading**:
+2. **Configure qBittorrent in Setting -> downloads**:
     - For `run_after_done.sh`:
+      Need to change the path in the shell script:
+      ```
+      output=$(python3 /path_of_your_folder/rename_anime.py --name="$file_name" --root="$directory")
+      ``` 
       ```
       /path_of_your_folder/run_after_done.sh "%F" "%D"
       ```
@@ -19,7 +23,7 @@ This repository contains scripts for managing and automating your anime download
     ```
     crontab -e
     ```
-    Add the following line:
+    Need to change the path in the shell script and Add the following line:
     ```
     0 0 1 */6 * /path/to/update_folder.sh
     ```

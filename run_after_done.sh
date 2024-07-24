@@ -8,6 +8,9 @@ directory="$2"
 echo "File name: $file_name" > /tmp/qbittorrent_log.txt
 echo "Directory: $directory" >> /tmp/qbittorrent_log.txt
 
+# 调用外部Python脚本 unwanted.py
+python3 /Volumes/media/anime/unwanted.py
+
 # 运行Python脚本，并获取重命名后的信息
 output=$(python3 /Volumes/media/anime/rename_anime.py --name="$file_name" --root="$directory")
 anime_name=$(echo $output | cut -d',' -f1)

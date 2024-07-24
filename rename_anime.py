@@ -8,9 +8,11 @@ import codecs
 from pathlib import Path
 
 # 设置日志文件路径
-log_name = op.join(op.dirname(op.realpath(__file__)), 'log.txt')
+log_name = Path(op.dirname(op.realpath(__file__))) / 'log.txt'
 # 设置不需要的番剧列表路径
-unwanted_list_path = "/Volumes/media/anime/unwanted_list.txt"
+unwanted_list_path = Path("/Volumes/media/anime/unwanted_list.txt")
+# 设置animelist文件路径
+animelist_path = log_name.parent / 'animelist.txt'
 
 # 定义匹配规则
 episode_rules = [
@@ -39,8 +41,8 @@ parser.add_argument('--path', default='',
                     help='The file full path of the input file.')
 
 def load_unwanted_list():
-    if os.path.exists(unwanted_list_path):
-        with open(unwanted_list_path, 'r', encoding='utf-8') as f:
+    if unwanted_list_path.exists():
+        with unwanted_list_path.open('r', encoding='utf-8') as f:
             return [line.strip() for line in f.readlines()]
     return []
 
@@ -107,13 +109,12 @@ def create_and_move(root, anime_name, new_path):
     return final_path
 
 def update_animelist(anime_name):
-    animelist_path = "/Volumes/media/anime/animelist.txt"
     anime_name = anime_name.split('/')[-1]  # 提取番剧名称
-    if not os.path.exists(animelist_path):
-        with open(animelist_path, 'w', encoding='utf-8') as f:
+    if not animelist_path.exists():
+        with animelist_path.open('w', encoding='utf-8') as f:
             f.write(f'{anime_name}\n')
     else:
-        with open(animelist_path, 'r+', encoding='utf-8') as f:
+        with animelist_path.open('r+', encoding='utf-8') as f:
             lines = f.readlines()
             if anime_name + '\n' not in lines:
                 f.write(f'{anime_name}\n')

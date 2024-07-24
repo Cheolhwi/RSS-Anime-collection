@@ -9,6 +9,8 @@ from pathlib import Path
 
 # 设置日志文件路径
 log_name = op.join(op.dirname(op.realpath(__file__)), 'log.txt')
+# 设置不需要的番剧列表路径
+unwanted_list_path = "/Volumes/media/anime/unwanted_list.txt"
 
 # 定义匹配规则
 episode_rules = [
@@ -36,6 +38,12 @@ parser.add_argument('--name', default='',
 parser.add_argument('--path', default='',
                     help='The file full path of the input file.')
 
+def load_unwanted_list():
+    if os.path.exists(unwanted_list_path):
+        with open(unwanted_list_path, 'r', encoding='utf-8') as f:
+            return [line.strip() for line in f.readlines()]
+    return []
+
 def check_file_size(root, name):
     file_path = root / name
     file_size = file_path.stat().st_size
@@ -45,13 +53,17 @@ def check_file_size(root, name):
         os.remove(file_path)
         sys.exit()
 
-def rename_and_move(root, name):
+def rename_and_move(root, name, unwanted_list):
     root = Path(root)
     check_file_size(root, name)  # 检查文件大小
     for rule in episode_rules:
         matchObj = re.match(rule, name, re.I)
         if matchObj is not None:
             anime_name = matchObj.group(1).strip()
+            if anime_name in unwanted_list:
+                print(f"Anime {anime_name} is in unwanted list, deleting {name}.")
+                os.remove(root / name)
+                return None, None, None
             episode_number = matchObj.group(2).strip()
             new_name = f'{anime_name} E{episode_number}{Path(name).suffix}'
             print(f'Renaming: {name} -> {new_name}')
@@ -60,10 +72,11 @@ def rename_and_move(root, name):
             new_path = root / new_name
             os.rename(str(root/name), str(new_path))
             create_and_move(root, anime_name, new_path)
+            update_animelist(anime_name)
             return anime_name, new_name, new_path
-    return general_check(root, name)
+    return general_check(root, name, unwanted_list)
 
-def general_check(root, name):
+def general_check(root, name, unwanted_list):
     new_name = ' '.join(name.split())
     if new_name != name:
         print(f'General Check Renaming: {name} -> {new_name}')
@@ -71,8 +84,14 @@ def general_check(root, name):
             print(f'General Check Renaming: {name} -> {new_name}', file=f)
         new_path = root / new_name
         os.rename(str(root/name), str(new_path))
-        create_and_move(root, Path(new_name).stem, new_path)
-        return Path(new_name).stem, new_name, new_path
+        anime_name = Path(new_name).stem
+        if anime_name in unwanted_list:
+            print(f"Anime {anime_name} is in unwanted list, deleting {new_name}.")
+            os.remove(new_path)
+            return None, None, None
+        update_animelist(anime_name)
+        create_and_move(root, anime_name, new_path)
+        return anime_name, new_name, new_path
     return None, None, None
 
 def create_and_move(root, anime_name, new_path):
@@ -87,11 +106,25 @@ def create_and_move(root, anime_name, new_path):
         print(f'Moving: {new_path} to {final_path}', file=f)
     return final_path
 
+def update_animelist(anime_name):
+    animelist_path = "/Volumes/media/anime/animelist.txt"
+    anime_name = anime_name.split('/')[-1]  # 提取番剧名称
+    if not os.path.exists(animelist_path):
+        with open(animelist_path, 'w', encoding='utf-8') as f:
+            f.write(f'{anime_name}\n')
+    else:
+        with open(animelist_path, 'r+', encoding='utf-8') as f:
+            lines = f.readlines()
+            if anime_name + '\n' not in lines:
+                f.write(f'{anime_name}\n')
+
 if __name__ == "__main__":
     args = parser.parse_args()
     if op.isdir(args.path):
         args.root = args.path
         args.path = ''
+
+    unwanted_list = load_unwanted_list()
 
     anime_name, new_name, new_path = None, None, None
     if args.name != '' and args.root != '':
@@ -102,9 +135,9 @@ if __name__ == "__main__":
 
     if args.path != '':
         root, name = op.split(args.path)
-        anime_name, new_name, new_path = rename_and_move(root, name)
+        anime_name, new_name, new_path = rename_and_move(root, name, unwanted_list)
     elif args.name != '' and args.root != '':
-        anime_name, new_name, new_path = rename_and_move(args.root, args.name)
+        anime_name, new_name, new_path = rename_and_move(args.root, args.name, unwanted_list)
     elif args.root != '':
         files = []
         for suffix in suffixs:
@@ -113,7 +146,7 @@ if __name__ == "__main__":
         print(f'Total Files Number: {len(files)}')
         for path in files:
             root, name = op.split(path)
-            anime_name, new_name, new_path = rename_and_move(root, name)
+            anime_name, new_name, new_path = rename_and_move(root, name, unwanted_list)
     else:
         print('Please input whether only root, or only path, or both root and name')
     

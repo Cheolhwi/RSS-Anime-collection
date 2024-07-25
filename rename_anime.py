@@ -10,7 +10,7 @@ from pathlib import Path
 # 设置日志文件路径
 log_name = Path(op.dirname(op.realpath(__file__))) / 'log.txt'
 # 设置不需要的番剧列表路径
-unwanted_list_path = Path("/Volumes/media/anime/unwanted_list.txt")
+unwanted_list_path = log_name.parent / 'unwanted_list.txt'
 # 设置animelist文件路径
 animelist_path = log_name.parent / 'animelist.txt'
 

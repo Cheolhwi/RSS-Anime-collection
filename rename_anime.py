@@ -46,18 +46,8 @@ def load_unwanted_list():
             return [line.strip() for line in f.readlines()]
     return []
 
-def check_file_size(root, name):
-    file_path = root / name
-    file_size = file_path.stat().st_size
-    file_size_gb = file_size / (1024 ** 3)  # 转换为GB
-    if file_size_gb > 1:
-        print(f"File {name} is larger than 1GB, deleting it.")
-        os.remove(file_path)
-        sys.exit()
-
 def rename_and_move(root, name, unwanted_list):
     root = Path(root)
-    check_file_size(root, name)  # 检查文件大小
     for rule in episode_rules:
         matchObj = re.match(rule, name, re.I)
         if matchObj is not None:
@@ -74,7 +64,6 @@ def rename_and_move(root, name, unwanted_list):
             new_path = root / new_name
             os.rename(str(root/name), str(new_path))
             create_and_move(root, anime_name, new_path)
-            update_animelist(anime_name)
             return anime_name, new_name, new_path
     return general_check(root, name, unwanted_list)
 
@@ -91,7 +80,6 @@ def general_check(root, name, unwanted_list):
             print(f"Anime {anime_name} is in unwanted list, deleting {new_name}.")
             os.remove(new_path)
             return None, None, None
-        update_animelist(anime_name)
         create_and_move(root, anime_name, new_path)
         return anime_name, new_name, new_path
     return None, None, None
@@ -153,3 +141,4 @@ if __name__ == "__main__":
     
     if anime_name and new_name and new_path:
         print(f'{anime_name},{new_name},{new_path}')
+        update_animelist(anime_name)
